@@ -10,6 +10,7 @@
             --secondary-color: #2575fc;
             --text-color: #ffffff;
             --button-text-color: #ffffff;
+            --background-color: #000000;
         }
 
         * {
@@ -22,50 +23,56 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .main-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
+            background-color: var(--background-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000; /* Video yuklanmaganda qora fon ko'rinadi */
         }
 
-        #bg-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translateX(-50%) translateY(-50%);
-            object-fit: cover; /* Videoni ekran bo'ylab to'liq yoyadi */
-            z-index: 1; /* Videoni asosiy qatlamga qo'yadi */
+        /* Bu videoni 9:16 formatda ushlab turuvchi asosiy oyna (frame) */
+        .mobile-frame {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 420px; /* Oynaning maksimal kengligi */
+            max-height: 95vh; /* Ekranning 95% balandligidan oshmasligi */
+            aspect-ratio: 9 / 16; /* Bu eng muhim qism: oynani 9:16 formatda saqlaydi */
+            background-color: #111;
+            overflow: hidden;
+            border-radius: 30px; /* Chiroyli ko'rinish uchun qirralarini yumaloqlash */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
         }
         
-        .overlay {
+        #bg-video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Videoni biroz xiralashtiradi */
+            object-fit: cover; /* Oyna 9:16 bo'lgani uchun video qirqilmaydi */
+            z-index: 1;
+        }
+        
+        /* Kontentni videoning ustiga chiqaruvchi qatlam */
+        .overlay {
+            position: relative; /* Videoning ustida bo'lishi uchun */
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Videoni biroz xiralashtiradi */
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Elementlarni vertikal yoyadi */
+            justify-content: space-between; /* Elementlarni boshiga va oxiriga joylash */
             align-items: center;
             text-align: center;
-            z-index: 2; /* Barcha kontentni videoning ustiga chiqaradi */
+            z-index: 2; 
             padding: 20px;
         }
 
         .top-header {
             width: 100%;
-            padding: 15px 0;
+            padding-top: 15px;
         }
 
         .logo {
@@ -74,21 +81,14 @@
             color: var(--text-color);
             text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
             letter-spacing: 3px;
-            float: left;
-            margin-left: 30px;
         }
 
         .content {
             color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1; /* Markaziy qismni egallaydi */
         }
         
         .title {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 700;
             margin-bottom: 15px;
             background: -webkit-linear-gradient(45deg, var(--primary-color), var(--secondary-color));
@@ -98,9 +98,9 @@
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            max-width: 500px;
-            margin-bottom: 40px;
+            font-size: 1.1rem;
+            max-width: 90%;
+            margin: 0 auto 30px auto;
             line-height: 1.6;
             color: #e0e0e0;
         }
@@ -109,11 +109,11 @@
             display: inline-block;
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             color: var(--button-text-color);
-            padding: 18px 40px;
+            padding: 16px 35px;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
             border: none;
@@ -125,40 +125,11 @@
             box-shadow: 0 10px 30px rgba(37, 117, 252, 0.4);
         }
 
-        /* Moslashuvchanlik uchun Media Queries */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 1.6rem;
-                margin-left: 20px;
-            }
-            .title {
-                font-size: 2.8rem;
-            }
-            .subtitle {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .top-header { text-align: center; }
-            .logo {
-                float: none;
-                margin: 0;
-            }
-            .content {
-                padding-bottom: 50px; /* Logotip bilan oraliq masofa uchun */
-            }
-            .title {
-                font-size: 2.2rem;
-            }
-            .subtitle {
-                font-size: 0.9rem;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="main-container">
+
+    <div class="mobile-frame">
         <video id="bg-video" loop muted playsinline oncontextmenu="return false;">
             <source src="https://arzumprive-creator.github.io/htmlim/video.mp4" type="video/mp4">
             Brauzeringiz videoni qo'llab-quvvatlamaydi.
@@ -171,7 +142,7 @@
 
             <main class="content">
                 <h1 class="title">Barber Pro</h1>
-                <p class="subtitle">O'zingizga yangicha ko'rinish bag'ishlang. Professional sartaroshlik xizmatlari uchun ilovamizni hoziroq yuklab oling!</p>
+                <p class="subtitle">O'zingizga yangicha ko'rinish bag'ishlang. Professional xizmatlar uchun ilovamizni yuklab oling!</p>
                 <a href="https://arzumprive-creator.github.io/htmlim/Barber%20Pro.apk" class="download-button" download>
                     Yuklab Olish
                 </a>
@@ -191,28 +162,22 @@
                 video.play().then(() => {
                     video.muted = false;
                     video.volume = 0;
-                    let currentVolume = 0;
                     const fadeAudio = setInterval(() => {
-                        currentVolume = Math.min(1.0, currentVolume + 0.05);
-                        video.volume = currentVolume;
-                        if (currentVolume >= 1.0) {
+                        if (video.volume < 1.0) {
+                            video.volume = Math.min(1.0, video.volume + 0.1);
+                        } else {
                             clearInterval(fadeAudio);
                         }
                     }, 100); 
-                }).catch(error => {
-                    console.error("Video avtomatik ishga tushmadi:", error);
-                });
+                }).catch(error => console.error("Video avtomatik ishga tushmadi:", error));
             }
             
-            // Foydalanuvchi biror harakat qilganda ovozli videoni ishga tushirish
             document.body.addEventListener('click', startPlayback, { once: true });
             document.body.addEventListener('touchstart', startPlayback, { once: true });
 
-            // Sahifa yuklanganda videoni ovozsiz ishga tushirishga harakat qilamiz
-            video.play().catch(e => {
-                console.log("Ovozsiz avtomatik ijro bloklandi. Foydalanuvchi harakatini kutilmoqda.");
-            });
+            video.play().catch(e => console.log("Ovozsiz avtomatik ijro uchun foydalanuvchi harakati kutilmoqda."));
         });
     </script>
+
 </body>
 </html>
