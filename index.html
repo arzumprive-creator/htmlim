@@ -8,7 +8,6 @@
         :root {
             --primary-color: #6a11cb;
             --secondary-color: #2575fc;
-            --background-color: #000000;
             --text-color: #ffffff;
             --button-text-color: #ffffff;
         }
@@ -23,23 +22,29 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
         }
 
-        .video-container {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .main-container {
+            position: relative;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000; /* Video yuklanmaganda qora fon ko'rinadi */
         }
 
         #bg-video {
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
             object-fit: cover; /* Videoni ekran bo'ylab to'liq yoyadi */
+            z-index: 1; /* Videoni asosiy qatlamga qo'yadi */
         }
         
         .overlay {
@@ -51,18 +56,16 @@
             background: rgba(0, 0, 0, 0.6); /* Videoni biroz xiralashtiradi */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between; /* Elementlarni vertikal yoyadi */
             align-items: center;
             text-align: center;
+            z-index: 2; /* Barcha kontentni videoning ustiga chiqaradi */
+            padding: 20px;
         }
 
         .top-header {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            padding: 25px 40px;
-            z-index: 10;
+            padding: 15px 0;
         }
 
         .logo {
@@ -71,12 +74,17 @@
             color: var(--text-color);
             text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
             letter-spacing: 3px;
-            float: left; /* Logotipni chap tomonga joylashtirish */
+            float: left;
+            margin-left: 30px;
         }
 
         .content {
             color: var(--text-color);
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1; /* Markaziy qismni egallaydi */
         }
         
         .title {
@@ -119,11 +127,9 @@
 
         /* Moslashuvchanlik uchun Media Queries */
         @media (max-width: 768px) {
-            .top-header {
-                padding: 20px 30px;
-            }
             .logo {
                 font-size: 1.6rem;
+                margin-left: 20px;
             }
             .title {
                 font-size: 2.8rem;
@@ -131,90 +137,82 @@
             .subtitle {
                 font-size: 1rem;
             }
-            .download-button {
-                padding: 15px 35px;
-                font-size: 1.1rem;
-            }
         }
 
         @media (max-width: 480px) {
-            .top-header {
-                padding: 20px;
-                text-align: center; /* Kichik ekranlarda logotipni markazga keltirish */
-            }
+            .top-header { text-align: center; }
             .logo {
-                float: none; /* float ni o'chirish */
-                font-size: 1.5rem;
+                float: none;
+                margin: 0;
+            }
+            .content {
+                padding-bottom: 50px; /* Logotip bilan oraliq masofa uchun */
             }
             .title {
-                margin-top: 40px; /* Logotip bilan oraliq masofa */
                 font-size: 2.2rem;
             }
             .subtitle {
                 font-size: 0.9rem;
             }
         }
-
     </style>
 </head>
 <body>
-
-    <div class="video-container" oncontextmenu="return false;">
-        <video id="bg-video" loop muted playsinline>
+    <div class="main-container">
+        <video id="bg-video" loop muted playsinline oncontextmenu="return false;">
             <source src="https://arzumprive-creator.github.io/htmlim/video.mp4" type="video/mp4">
             Brauzeringiz videoni qo'llab-quvvatlamaydi.
         </video>
-    </div>
 
-    <div class="overlay">
-        <header class="top-header">
-            <div class="logo">ARZU</div>
-        </header>
+        <div class="overlay">
+            <header class="top-header">
+                <div class="logo">ARZU</div>
+            </header>
 
-        <div class="content">
-            <h1 class="title">Barber Pro</h1>
-            <p class="subtitle">O'zingizga yangicha ko'rinish bag'ishlang. Professional sartaroshlik xizmatlari uchun ilovamizni hoziroq yuklab oling!</p>
-            <a href="https://arzumprive-creator.github.io/htmlim/Barber%20Pro.apk" class="download-button" download>
-                Yuklab Olish
-            </a>
+            <main class="content">
+                <h1 class="title">Barber Pro</h1>
+                <p class="subtitle">O'zingizga yangicha ko'rinish bag'ishlang. Professional sartaroshlik xizmatlari uchun ilovamizni hoziroq yuklab oling!</p>
+                <a href="https://arzumprive-creator.github.io/htmlim/Barber%20Pro.apk" class="download-button" download>
+                    Yuklab Olish
+                </a>
+            </main>
         </div>
     </div>
 
     <script>
-        window.addEventListener('load', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('bg-video');
+            let hasInteracted = false;
 
             function startPlayback() {
+                if (hasInteracted) return;
+                hasInteracted = true;
+
                 video.play().then(() => {
                     video.muted = false;
                     video.volume = 0;
                     let currentVolume = 0;
                     const fadeAudio = setInterval(() => {
-                        if (currentVolume < 1.0) {
-                            currentVolume += 0.05;
-                            if (currentVolume > 1.0) currentVolume = 1.0;
-                            video.volume = currentVolume;
-                        } else {
+                        currentVolume = Math.min(1.0, currentVolume + 0.05);
+                        video.volume = currentVolume;
+                        if (currentVolume >= 1.0) {
                             clearInterval(fadeAudio);
                         }
                     }, 100); 
                 }).catch(error => {
                     console.error("Video avtomatik ishga tushmadi:", error);
                 });
-                
-                // Bu funksiya faqat bir marta ishlashi uchun event listener'larni o'chiramiz
-                document.body.removeEventListener('click', startPlayback);
-                document.body.removeEventListener('touchstart', startPlayback);
             }
             
             // Foydalanuvchi biror harakat qilganda ovozli videoni ishga tushirish
-            document.body.addEventListener('click', startPlayback);
-            document.body.addEventListener('touchstart', startPlayback);
+            document.body.addEventListener('click', startPlayback, { once: true });
+            document.body.addEventListener('touchstart', startPlayback, { once: true });
 
             // Sahifa yuklanganda videoni ovozsiz ishga tushirishga harakat qilamiz
-            video.play().catch(e => console.log("Ovozsiz avtomatik ijro ham bloklandi. Foydalanuvchi harakatini kutilmoqda."));
+            video.play().catch(e => {
+                console.log("Ovozsiz avtomatik ijro bloklandi. Foydalanuvchi harakatini kutilmoqda.");
+            });
         });
     </script>
-
 </body>
 </html>
