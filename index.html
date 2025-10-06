@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARZU | Barber Pro</title>
     <style>
+        /* O'zgaruvchilar (Variables) */
         :root {
             --primary-color: #6a11cb;
             --secondary-color: #2575fc;
@@ -13,15 +14,16 @@
             --background-color: #000000;
         }
 
+        /* Umumiy stillar */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body, html {
+        html, body {
             height: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Sahifani aylantirishni o'chirish */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-color);
             display: flex;
@@ -29,35 +31,36 @@
             align-items: center;
         }
 
-        /* Bu videoni 9:16 formatda ushlab turuvchi asosiy oyna (frame) */
+        /* Mobil qurilma ko'rinishidagi asosiy oyna (frame) */
         .mobile-frame {
             position: relative;
             width: 100%;
             height: 100%;
             max-width: 420px; /* Oynaning maksimal kengligi */
             max-height: 95vh; /* Ekranning 95% balandligidan oshmasligi */
-            aspect-ratio: 9 / 16; /* Bu eng muhim qism: oynani 9:16 formatda saqlaydi */
+            aspect-ratio: 9 / 16; /* Oynani doim 9:16 formatda saqlaydi */
             background-color: #111;
             overflow: hidden;
-            border-radius: 30px; /* Chiroyli ko'rinish uchun qirralarini yumaloqlash */
+            border-radius: 30px; /* Chiroyli ko'rinish uchun qirralarni yumaloqlash */
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
         }
         
+        /* Fon videosi */
         #bg-video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Oyna 9:16 bo'lgani uchun video qirqilmaydi */
+            object-fit: cover; /* Video o'lchamini oyna bo'yicha moslashtiradi */
             z-index: 1;
         }
         
         /* Kontentni videoning ustiga chiqaruvchi qatlam */
         .overlay {
-            position: relative; /* Videoning ustida bo'lishi uchun */
+            position: relative;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5); /* Videoni biroz xiralashtiradi */
@@ -67,12 +70,11 @@
             align-items: center;
             text-align: center;
             z-index: 2; 
-            padding: 20px;
+            padding: 40px 20px; /* Yuqori va pastdan ko'proq joy */
         }
 
         .top-header {
             width: 100%;
-            padding-top: 15px;
         }
 
         .logo {
@@ -91,8 +93,10 @@
             font-size: 3.2rem;
             font-weight: 700;
             margin-bottom: 15px;
-            background: -webkit-linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; /* Eski brauzerlar uchun -webkit-text-fill-color o'rniga */
             -webkit-text-fill-color: transparent;
             text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
@@ -121,42 +125,18 @@
         }
 
         .download-button:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px); /* Sichqoncha borganda yuqoriga siljish effekti */
             box-shadow: 0 10px 30px rgba(37, 117, 252, 0.4);
         }
-
     </style>
 </head>
 <body>
 
-<<<<<<< HEAD
-    <div class="main-container">
-        <div class="video-container" oncontextmenu="return false;">
-            <video
-                id="my-video"
-                class="video-js vjs-default-skin"
-                autoplay
-                muted
-                loop
-                playsinline
-                data-setup='{}'>
-                <source src="https://arzumprive-creator.github.io/htmlim/video.mp4" type="video/mp4" />
-                <p class="vjs-no-js">
-                    Videoni ko'rish uchun JavaScript-ni yoqing va HTML5 videoni qo'llab-quvvatlaydigan
-                    brauzerdan foydalaning.
-                </p>
-            </video>
-        </div>
-        <div class="content">
-            <h1>Barber Pro</h1>
-            <p>Eng yaxshi sartaroshlik xizmatlari uchun ilovamizni yuklab oling!</p>
-            <a href="https://arzumprive-creator.github.io/htmlim/Barber_Pro.apk" class="download-button" download>
-                Yuklab Olish
-            </a>
-=======
     <div class="mobile-frame">
-        <video id="bg-video" loop muted playsinline oncontextmenu="return false;">
+        <!-- Video autoplay, loop (doimiy aylanish), muted (ovozsiz) va playsinline (iOS qurilmalarida to'liq ekranga chiqmasdan ijro etish) xususiyatlariga ega -->
+        <video id="bg-video" autoplay loop muted playsinline oncontextmenu="return false;">
             <source src="https://arzumprive-creator.github.io/htmlim/video.mp4" type="video/mp4">
+            <!-- Agar brauzer videoni qo'llab-quvvatlamasa, bu xabar ko'rinadi -->
             Brauzeringiz videoni qo'llab-quvvatlamaydi.
         </video>
 
@@ -168,40 +148,48 @@
             <main class="content">
                 <h1 class="title">Barber Pro</h1>
                 <p class="subtitle">O'zingizga yangicha ko'rinish bag'ishlang. Professional xizmatlar uchun ilovamizni yuklab oling!</p>
+                <!-- "download" atributi faylni to'g'ridan-to'g'ri yuklab olishni ta'minlaydi -->
                 <a href="https://arzumprive-creator.github.io/htmlim/Barber_Pro.apk" class="download-button" download>
                     Yuklab Olish
                 </a>
             </main>
->>>>>>> 0bf4a8b9ea98be3428fe1b8e9a6444320e02312e
+            
+            <!-- Bo'sh joy hosil qilish uchun qo'shimcha element, kontentni o'rtaga yaqinlashtiradi -->
+            <div></div> 
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('bg-video');
-            let hasInteracted = false;
 
-            function startPlayback() {
-                if (hasInteracted) return;
-                hasInteracted = true;
-
-                video.play().then(() => {
-                    video.muted = false;
-                    video.volume = 0;
-                    const fadeAudio = setInterval(() => {
-                        if (video.volume < 1.0) {
-                            video.volume = Math.min(1.0, video.volume + 0.1);
-                        } else {
-                            clearInterval(fadeAudio);
-                        }
-                    }, 100); 
-                }).catch(error => console.error("Video avtomatik ishga tushmadi:", error));
-            }
+            // Ko'pgina zamonaviy brauzerlar ovozli videoni avtomatik tarzda ishga tushirishga ruxsat bermaydi.
+            // Shuning uchun, avval ovozsiz ishga tushirib, keyin foydalanuvchi sahifaga biror marta bossa, ovozni yoqamiz.
             
-            document.body.addEventListener('click', startPlayback, { once: true });
-            document.body.addEventListener('touchstart', startPlayback, { once: true });
+            // Videoni ishga tushirishga harakat qilamiz
+            const playPromise = video.play();
 
-            video.play().catch(e => console.log("Ovozsiz avtomatik ijro uchun foydalanuvchi harakati kutilmoqda."));
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Avtomatik ijro etishda xatolik bo'lsa, uni konsolga chiqaramiz
+                    // Odatda bu foydalanuvchi harakatini talab qiladi.
+                    console.warn("Video avtomatik ijro etilmadi. Foydalanuvchi harakati kutilmoqda.", error);
+                });
+            }
+
+            // Foydalanuvchi sahifaning istalgan joyiga bir marta bosganda ovozni yoqish funksiyasi
+            function enableSound() {
+                if (video.muted) {
+                    video.muted = false;
+                    video.volume = 1.0; // Ovozni baland qilish
+                }
+                // Bu funksiya faqat bir marta ishlashi uchun eshituvchini o'chiramiz
+                document.body.removeEventListener('click', enableSound);
+                document.body.removeEventListener('touchstart', enableSound);
+            }
+
+            document.body.addEventListener('click', enableSound);
+            document.body.addEventListener('touchstart', enableSound);
         });
     </script>
 
