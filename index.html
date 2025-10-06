@@ -11,7 +11,6 @@
             --secondary-color: #2575fc;
             --text-color: #ffffff;
             --button-text-color: #ffffff;
-            --background-color: #000000;
         }
 
         /* Umumiy stillar */
@@ -24,32 +23,40 @@
         html, body {
             height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
             overflow: hidden; /* Sahifani aylantirishni o'chirish */
         }
 
-        /* Videoni butun ekranga fon sifatida joylashtirish uchun konteyner */
+        /* Asosiy konteyner */
+        .page-container {
+            position: relative; /* Ichidagi elementlarni joylashtirish uchun asos */
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Video yuklanmaganda qora fon ko'rinib turadi */
+        }
+
+        /* Videoni butun ekranga fon sifatida joylashtirish */
         .video-background {
-            position: fixed; /* Boshqa elementlar ostida qotib turishi uchun */
+            position: absolute; /* Ota-ona (page-container) bo'yicha joylashadi */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Barcha kontentning orqasida turadi */
+            /* z-index olib tashlandi, endi u asos qatlam */
         }
 
         #bg-video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Video o'lchamini ota-onasiga moslab, qirqib to'ldiradi */
+            object-fit: cover; /* Video o'lchamini moslab, qirqib to'ldiradi */
         }
 
-        /* Kontentni videoning ustiga chiqaruvchi va markazlashtiruvchi qatlam */
+        /* Kontentni videoning ustiga chiqaruvchi qatlam */
         .overlay {
+            position: relative; /* Video ustida turishi uchun */
+            z-index: 2; /* Videodan yuqori qatlamda ekanligini bildiradi */
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Videoni biroz ko'proq xiralashtiradi */
+            background: rgba(0, 0, 0, 0.6); /* Videoni biroz xiralashtiradi */
             display: flex;
             flex-direction: column;
             justify-content: center; /* Vertikal markazga joylash */
@@ -72,7 +79,6 @@
         }
 
         .title {
-            /* clamp() yordamida shrift o'lchami ekranga qarab silliq o'zgaradi */
             font-size: clamp(2.5rem, 10vw, 4.5rem);
             font-weight: 700;
             margin-bottom: 20px;
@@ -114,48 +120,38 @@
 </head>
 <body>
 
-    <div class="video-background">
-        <!-- Muhim atributlar: autoplay, muted (avto-ijro uchun), loop, playsinline (iOS uchun) -->
-        <video 
-            id="bg-video" 
-            autoplay 
-            loop 
-            muted 
-            playsinline 
-            oncontextmenu="return false;"
-            preload="auto"
-        >
-            <source src="https://arzumprive-creator.github.io/htmlim/video.mp4" type="video/mp4">
-            Brauzeringiz videoni qo'llab-quvvatlamaydi.
-        </video>
-    </div>
+    <div class="page-container">
+        <div class="video-background">
+            <video id="bg-video" autoplay loop muted playsinline oncontextmenu="return false;" preload="auto">
+                <source src="https://arzumprive-creator.github.io/htmlim/video.mp4" type="video/mp4">
+                Brauzeringiz videoni qo'llab-quvvatlamaydi.
+            </video>
+        </div>
 
-    <div class="overlay">
-        <header>
-            <div class="logo">ARZU</div>
-        </header>
+        <div class="overlay">
+            <header>
+                <div class="logo">ARZU</div>
+            </header>
 
-        <main class="main-content">
-            <h1 class="title">Barber Pro</h1>
-            <p class="subtitle">O'zingizga yangicha ko'rinish bag'ishlang. Professional xizmatlar uchun ilovamizni yuklab oling!</p>
-            <a href="https://arzumprive-creator.github.io/htmlim/Barber_Pro.apk" class="download-button" download>
-                Yuklab Olish
-            </a>
-        </main>
+            <main class="main-content">
+                <h1 class="title">Barber Pro</h1>
+                <p class="subtitle">O'zingizga yangicha ko'rinish bag'ishlang. Professional xizmatlar uchun ilovamizni yuklab oling!</p>
+                <a href="https://arzumprive-creator.github.io/htmlim/Barber_Pro.apk" class="download-button" download>
+                    Yuklab Olish
+                </a>
+            </main>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const video = document.getElementById('bg-video');
 
-            // Brauzerlar odatda ovozli videoni avtomatik ishga tushirishga ruxsat bermaydi.
-            // Shuning uchun foydalanuvchi sahifaga biror marta bossa ovozni yoqamiz.
             function enableSoundOnClick() {
                 if (video.muted) {
                     video.muted = false;
                     video.volume = 1.0;
                 }
-                // Bu funksiya faqat bir marta ishlashi uchun eshituvchini o'chiramiz.
                 document.body.removeEventListener('click', enableSoundOnClick);
                 document.body.removeEventListener('touchstart', enableSoundOnClick);
             }
